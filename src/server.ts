@@ -1,19 +1,29 @@
+import express from "express";
+import { graphqlHTTP } from "express-graphql";
+import { buildSchema } from "graphql";
 
-async startApolloServer(typeDef, resolvers){
-	const app = express();
+const schema = buildSchema(`
+	type Query{
+		hello: String
+	}
+`);
 
-	const httpServer = http.createServer(app);
+const root = {
+  hello: () => {
+    return "Hello world!";
+  },
+};
 
-	const server = new ApolloServer({
-		typeDefs,
-		resolvers,
-		plugins: [ApolloServerPluginDrainHttpServer({httpServer})]
-	});
+const app = express();
+app.use(
+  "graphql",
+  graphqlHTTP({
+    schema: schema,
+    rootValue: root,
+    graphiql: true,
+  })
+);
 
-	await server.start();
+app.listen(4000);
 
-	server.applyMiddleware({app});
-
-	await new Promise(resolve => httpServer.listen({port:4000}, resolve));
-	console.log(`?? Server ready at http://localhost:4000${server.graphqlPath}`);
-}
+console.log("Running graphql server at 4000 port.");
