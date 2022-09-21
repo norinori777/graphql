@@ -8,13 +8,11 @@ const express_graphql_1 = require("express-graphql");
 const graphql_1 = require("graphql");
 const schema = (0, graphql_1.buildSchema)(`
 	type Query{
-		hello: String
+		hello(name: String): String
 	}
 `);
 const root = {
-    hello: () => {
-        return "Hello world!";
-    },
+    hello: (name) => "Hello world Mr." + name,
 };
 const app = (0, express_1.default)();
 app.use("/graphql", (0, express_graphql_1.graphqlHTTP)({

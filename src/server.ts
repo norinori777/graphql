@@ -4,14 +4,12 @@ import { buildSchema } from "graphql";
 
 const schema = buildSchema(`
 	type Query{
-		hello: String
+		hello(name: String): String
 	}
 `);
 
 const root = {
-  hello: () => {
-    return "Hello world!";
-  },
+  hello: (name: string) => "Hello world Mr." + name,
 };
 
 const app = express();
