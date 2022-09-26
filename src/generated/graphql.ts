@@ -4,7 +4,6 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -16,12 +15,22 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  hello?: Maybe<Scalars['String']>;
+  room?: Maybe<Room>;
+  rooms: Array<Room>;
 };
 
 
-export type QueryHelloArgs = {
+export type QueryRoomArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+export type Room = {
+  __typename?: 'Room';
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  insertAt: Scalars['String'];
   name: Scalars['String'];
+  updateAt: Scalars['String'];
 };
 
 
@@ -94,22 +103,37 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
   Query: ResolverTypeWrapper<{}>;
+  Room: ResolverTypeWrapper<Room>;
   String: ResolverTypeWrapper<Scalars['String']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
+  ID: Scalars['ID'];
   Query: {};
+  Room: Room;
   String: Scalars['String'];
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  hello?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<QueryHelloArgs, 'name'>>;
+  room?: Resolver<Maybe<ResolversTypes['Room']>, ParentType, ContextType, Partial<QueryRoomArgs>>;
+  rooms?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType>;
+};
+
+export type RoomResolvers<ContextType = any, ParentType extends ResolversParentTypes['Room'] = ResolversParentTypes['Room']> = {
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  insertAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updateAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>;
+  Room?: RoomResolvers<ContextType>;
 };
 

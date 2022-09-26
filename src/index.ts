@@ -1,16 +1,26 @@
 import { ApolloServer, gql } from "apollo-server";
-import { Resolvers } from "./generated/graphql";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
 const typeDefs = gql`
   type Query {
-    hello(name: String!): String
+    room(id: ID): Room
+    rooms: [Room!]!
+  }
+
+  type Room {
+    id: ID!
+    insertAt: String!
+    updateAt: String!
+    name: String!
+    description: String!
   }
 `;
-const resolvers: Resolvers = {
+
+const resolvers = {
   Query: {
-    hello: (parent, args) => {
-      console.log("name:" + args.name);
-      return "Hello World " + args.name;
-    },
+    rooms: () => prisma.room.findMany(),
   },
 };
 const server = new ApolloServer({ typeDefs, resolvers });
