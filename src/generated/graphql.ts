@@ -13,10 +13,43 @@ export type Scalars = {
   Float: number;
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  registerUser?: Maybe<User>;
+};
+
+
+export type MutationRegisterUserArgs = {
+  input?: InputMaybe<RegisterUserInput>;
+};
+
+export type Post = {
+  __typename?: 'Post';
+  author?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  insertAt: Scalars['String'];
+  message?: Maybe<Scalars['String']>;
+  roomId?: Maybe<Scalars['ID']>;
+  updateAt: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  post?: Maybe<Post>;
+  posts?: Maybe<Array<Maybe<Post>>>;
   room?: Maybe<Room>;
-  rooms: Array<Room>;
+  rooms?: Maybe<Array<Maybe<Room>>>;
+  user?: Maybe<User>;
+};
+
+
+export type QueryPostArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryPostsArgs = {
+  roomId?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -24,13 +57,36 @@ export type QueryRoomArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
+
+export type QueryUserArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
 export type Room = {
   __typename?: 'Room';
-  description: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   insertAt: Scalars['String'];
   name: Scalars['String'];
   updateAt: Scalars['String'];
+};
+
+export type User = {
+  __typename?: 'User';
+  avater?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  insertAt: Scalars['String'];
+  password?: Maybe<Scalars['String']>;
+  updateAt: Scalars['String'];
+  userId?: Maybe<Scalars['String']>;
+};
+
+export type RegisterUserInput = {
+  avater?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']>;
+  userid?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -104,27 +160,52 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  Mutation: ResolverTypeWrapper<{}>;
+  Post: ResolverTypeWrapper<Post>;
   Query: ResolverTypeWrapper<{}>;
   Room: ResolverTypeWrapper<Room>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  User: ResolverTypeWrapper<User>;
+  registerUserInput: RegisterUserInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   ID: Scalars['ID'];
+  Mutation: {};
+  Post: Post;
   Query: {};
   Room: Room;
   String: Scalars['String'];
+  User: User;
+  registerUserInput: RegisterUserInput;
+};
+
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  registerUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, Partial<MutationRegisterUserArgs>>;
+};
+
+export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
+  author?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  insertAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  roomId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  updateAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, Partial<QueryPostArgs>>;
+  posts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType, Partial<QueryPostsArgs>>;
   room?: Resolver<Maybe<ResolversTypes['Room']>, ParentType, ContextType, Partial<QueryRoomArgs>>;
-  rooms?: Resolver<Array<ResolversTypes['Room']>, ParentType, ContextType>;
+  rooms?: Resolver<Maybe<Array<Maybe<ResolversTypes['Room']>>>, ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, Partial<QueryUserArgs>>;
 };
 
 export type RoomResolvers<ContextType = any, ParentType extends ResolversParentTypes['Room'] = ResolversParentTypes['Room']> = {
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   insertAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -132,8 +213,22 @@ export type RoomResolvers<ContextType = any, ParentType extends ResolversParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  avater?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  insertAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  password?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updateAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  userId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
+  Mutation?: MutationResolvers<ContextType>;
+  Post?: PostResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Room?: RoomResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
 };
 

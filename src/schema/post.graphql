@@ -1,13 +1,13 @@
-type Post {
-  id: ID!
-  insertAt: Date
-  updateAt: Date
-  roomId: ID
-  message: String
-  author: String
-}
-
 type Query {
   post(id: ID): Post
   posts(roomId: ID): [Post]
+}
+
+type Post {
+  id: ID!
+  insertAt: String!
+  updateAt: String!
+  roomId: ID
+  message: String
+  author: String
 }

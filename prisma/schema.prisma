@@ -11,20 +11,32 @@ datasource db {
 }
 
 model Room {
-  id  String @id @default(uuid())
-  createAt  DateTime  @default(now())
-  updateAt  DateTime  @default(now())
-  name  String @db.VarChar(24)
-  description String @db.VarChar(1024)
-  posts Post[]
+  id          String   @id @default(uuid())
+  createAt    DateTime @default(now())
+  updateAt    DateTime @default(now())
+  name        String   @db.VarChar(24)
+  description String   @db.VarChar(1024)
+  posts       Post[]
+}
+
+model User {
+  id       String   @id @default(uuid())
+  createAt DateTime @default(now())
+  updateAt DateTime @default(now())
+  userId   String   @db.VarChar(24)
+  email    String   @db.VarChar(128)
+  avater   String
+  password String
+  Post     Post[]
 }
 
 model Post {
-  id  String @id @default(uuid())
-  createAt  DateTime  @default(now())
-  updateAt  DateTime  @default(now())
-  room Room @relation(fields: [roomId], references: [id])
-  message String  @db.VarChar(1024)
-  author  String  @db.VarChar(128)
-  roomId  String
+  id       String   @id @default(uuid())
+  createAt DateTime @default(now())
+  updateAt DateTime @default(now())
+  room     Room     @relation(fields: [roomId], references: [id])
+  roomId   String
+  user     User     @relation(fields: [authorId], references: [id])
+  authorId String
+  message  String   @db.VarChar(1024)
 }

@@ -3,8 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const main = async () => {
-    const rooms = await prisma.rooms.findMany();
-    console.log(rooms);
+    const user = await prisma.user.create({
+        data: {
+            userId: "880781",
+            email: "norinori6791@gmail.com",
+            avater: "data:@fowjfiowjfaijoijweoaofjweiofjweoifjaksvfldsnvjvhosahoi",
+        },
+    });
 };
 main()
     .catch((e) => {

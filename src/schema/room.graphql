@@ -1,12 +1,12 @@
+type Query {
+  room(id: ID): Room
+  rooms: [Room]
+}
+
 type Room {
   id: ID!
   insertAt: String!
   updateAt: String!
   name: String!
   description: String
-}
-
-type Query {
-  room(id: ID): Room
-  rooms(): [Room]
 }
