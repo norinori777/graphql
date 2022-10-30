@@ -1,5 +1,15 @@
 type Query {
   user(id: ID): User
+  auth(input: authUserInput!): authResult!
+}
+
+input authUserInput {
+  userId: String!
+  password: String!
+}
+
+type authResult {
+  result: Boolean!
 }
 
 type Mutation {
@@ -7,7 +17,7 @@ type Mutation {
 }
 
 input registerUserInput {
-  userid: String
+  userId: String
   email: String
   avater: String
   password: String

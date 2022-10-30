@@ -2,14 +2,13 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 const main = async () => {
-  const user = await prisma.user.create({
-    data: {
+  const count = await prisma.user.count({
+    where: {
       userId: "880781",
-      email: "norinori6791@gmail.com",
-      avater: "data:@fowjfiowjfaijoijweoaofjweiofjweoifjaksvfldsnvjvhosahoi",
       password: "test",
     },
   });
+  console.log(count);
   // const rooms = await prisma.room.findMany();
   // console.log(rooms);
 };

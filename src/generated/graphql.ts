@@ -4,6 +4,7 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -35,11 +36,17 @@ export type Post = {
 
 export type Query = {
   __typename?: 'Query';
+  auth: AuthResult;
   post?: Maybe<Post>;
   posts?: Maybe<Array<Maybe<Post>>>;
   room?: Maybe<Room>;
   rooms?: Maybe<Array<Maybe<Room>>>;
   user?: Maybe<User>;
+};
+
+
+export type QueryAuthArgs = {
+  input: AuthUserInput;
 };
 
 
@@ -82,11 +89,21 @@ export type User = {
   userId?: Maybe<Scalars['String']>;
 };
 
+export type AuthResult = {
+  __typename?: 'authResult';
+  result: Scalars['Boolean'];
+};
+
+export type AuthUserInput = {
+  password: Scalars['String'];
+  userId: Scalars['String'];
+};
+
 export type RegisterUserInput = {
   avater?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
-  userid?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -166,6 +183,8 @@ export type ResolversTypes = {
   Room: ResolverTypeWrapper<Room>;
   String: ResolverTypeWrapper<Scalars['String']>;
   User: ResolverTypeWrapper<User>;
+  authResult: ResolverTypeWrapper<AuthResult>;
+  authUserInput: AuthUserInput;
   registerUserInput: RegisterUserInput;
 };
 
@@ -179,6 +198,8 @@ export type ResolversParentTypes = {
   Room: Room;
   String: Scalars['String'];
   User: User;
+  authResult: AuthResult;
+  authUserInput: AuthUserInput;
   registerUserInput: RegisterUserInput;
 };
 
@@ -197,6 +218,7 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  auth?: Resolver<ResolversTypes['authResult'], ParentType, ContextType, RequireFields<QueryAuthArgs, 'input'>>;
   post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, Partial<QueryPostArgs>>;
   posts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType, Partial<QueryPostsArgs>>;
   room?: Resolver<Maybe<ResolversTypes['Room']>, ParentType, ContextType, Partial<QueryRoomArgs>>;
@@ -224,11 +246,17 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type AuthResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['authResult'] = ResolversParentTypes['authResult']> = {
+  result?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Room?: RoomResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
+  authResult?: AuthResultResolvers<ContextType>;
 };
 
